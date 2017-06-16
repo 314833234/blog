@@ -1,0 +1,34 @@
+<% if (pagination == 2){ %>
+  <% page.posts.each(function(post){ %>
+    <%- partial('article_index', {post: post, index: true}) %>
+  <% }) %>
+<% } else { %>
+  <% var last; %>
+  <% page.posts.each(function(post, i){ %>
+    <% var year = post.date.year(); %>
+    <% var month = post.date.month()+1; %>
+    <% if (last != year){ %>
+      <% if (last != null){ %>
+        </div></section>
+      <% } %>
+      <% last = year; %>
+      <section class="archives-wrap archives-wrap-list">
+        <div class="archive-year-wrap archive-year">
+            <%= year %>
+        </div>
+        <div class="archives archives-list">
+    <% } %>
+    <%- partial('archive-post', {post: post, even: i % 2 == 0}) %>
+  <% }) %>
+  <% if (page.posts.length){ %>
+    </div></section>
+  <% } %>
+<% } %>
+<% if (page.total > 1){ %>
+  <nav id="page-nav">
+    <%- paginator({
+      prev_text: "<i class='iconfont icon-prev'></i>",
+      next_text: "<i class='iconfont icon-next'></i>"
+    }) %>
+  </nav>
+<% } %>
